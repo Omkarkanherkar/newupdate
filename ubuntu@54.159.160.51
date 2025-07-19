@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  mongo:
+    image: mongo:5.0  # ✅ Fixed spacing
+    container_name: mongodb
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo-db:/data/db   # ✅ Fixed syntax (colon `:` missing after volume name)
+    networks:
+      - app-network   # ✅ Corrected indentation
+  
+  boot-app:
+    image: omkar1975/chat-app:latest
+    build:
+      context: D:/chat-app-backened/chat-app-backened/chat-app-backened
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/chatapp
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+
+volumes:
+  mongo-db:
+
+networks:
+  app-network:
